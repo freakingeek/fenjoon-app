@@ -16,7 +16,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "io.fenjoon.app"
+      "bundleIdentifier": "io.fenjoon.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,8 +28,14 @@
       },
       "package": "io.fenjoon.app"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "androidStatusBar": {
+      "backgroundColor": "#3a3a3a",
+      "translucent": false
+    },
+    "androidNavigationBar": {
+      "visible": true,
+      "barStyle": "light-content",
+      "backgroundColor": "#2e2e2e"
     },
     "extra": {
       "eas": {
