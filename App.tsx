@@ -32,6 +32,7 @@ export default function App() {
       <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
         <WebView
           bounces={false}
+          ref={webViewRef}
           userAgent="Fenjoon-WebView"
           source={{ uri: "https://fenjoon.vercel.app" }}
           style={{ flex: 1, backgroundColor: "#2e2e2e" }}
