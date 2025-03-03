@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { WebView } from "react-native-webview";
 import React, { useRef, useState, useEffect } from "react";
-import { SafeAreaView, View, StyleSheet, BackHandler } from "react-native";
+import { View, StyleSheet, BackHandler } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   const webViewRef = useRef(null);
@@ -28,8 +29,8 @@ export default function App() {
   }, [canGoBack]);
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
+      <View style={styles.container}>
         <WebView
           bounces={false}
           ref={webViewRef}
@@ -39,8 +40,8 @@ export default function App() {
           onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
         />
         <StatusBar />
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
