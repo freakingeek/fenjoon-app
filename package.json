@@ -6,7 +6,8 @@
     "react-native": "0.76.3",
     "react-native-web": "~0.19.6",
     "react-native-webview": "13.12.5",
-    "expo-status-bar": "~2.0.1"
+    "expo-status-bar": "~2.0.1",
+    "react-native-safe-area-context": "4.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
