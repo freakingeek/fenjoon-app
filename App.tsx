@@ -37,9 +37,17 @@ export default function App() {
     });
   }, []);
 
-  const share = async (data: ShareData) => {
+  const share = async (data: {
+    title?: string;
+    message?: string;
+    url?: string;
+    blob?: Blob;
+  }) => {
+    Alert.alert(`${data.blob}`);
+
     await Share.share({
-      message: data.text,
+      message: data.message,
+      url: data.blob ? URL.createObjectURL(data.blob) : undefined,
     });
   };
 
