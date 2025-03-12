@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { View, Share, BackHandler } from "react-native";
+import { View, Share, BackHandler, Alert } from "react-native";
 import CookieManager from "@react-native-cookies/cookies";
 import React, { useRef, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -46,6 +46,7 @@ export default function App() {
 
   const handleMessage = (event: WebViewMessageEvent) => {
     const data = JSON.parse(event.nativeEvent.data) as Record<string, string>;
+    Alert.alert("data: ", event.nativeEvent.data);
     if (data.type === "share") {
       share(data);
     }
@@ -53,7 +54,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
-      <View style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
+      <View>
         <WebView
           bounces={false}
           ref={webViewRef}
