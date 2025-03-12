@@ -1,5 +1,7 @@
+import * as Sharing from "expo-sharing";
 import { StatusBar } from "expo-status-bar";
-import { View, Share, BackHandler, Alert } from "react-native";
+import * as FileSystem from "expo-file-system";
+import { View, BackHandler, Alert } from "react-native";
 import CookieManager from "@react-native-cookies/cookies";
 import React, { useRef, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -41,14 +43,30 @@ export default function App() {
     title?: string;
     message?: string;
     url?: string;
-    blob?: Blob;
+    image?: string;
   }) => {
-    Alert.alert(`${data.blob}`);
+    if (!data.image) return;
 
-    await Share.share({
-      message: data.message,
-      url: data.blob ? URL.createObjectURL(data.blob) : undefined,
-    });
+    try {
+      const fileUri = `${FileSystem.cacheDirectory}fenjoon-story.png`;
+
+      // Convert Base64 to a local file
+      await FileSystem.writeAsStringAsync(fileUri, data.image, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      // Ensure sharing is available
+      if (!(await Sharing.isAvailableAsync())) {
+        Alert.alert("Error", "Sharing is not available on this device.");
+        return;
+      }
+
+      // Share the locally saved image
+      await Sharing.shareAsync(fileUri);
+    } catch (error) {
+      Alert.alert("Error", "Failed to share image.");
+      console.error(error);
+    }
   };
 
   const handleMessage = (event: WebViewMessageEvent) => {
