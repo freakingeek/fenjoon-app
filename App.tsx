@@ -1,8 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { WebView } from "react-native-webview";
+import { View, Share, BackHandler } from "react-native";
+import CookieManager from "@react-native-cookies/cookies";
 import React, { useRef, useState, useEffect } from "react";
-import { View, StyleSheet, BackHandler } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { WebView, type WebViewMessageEvent } from "react-native-webview";
 
 export default function App() {
   const webViewRef = useRef(null);
@@ -23,14 +24,36 @@ export default function App() {
       backAction
     );
 
-    return () => {
-      backHandler.remove();
-    };
+    return () => backHandler.remove();
   }, [canGoBack]);
+
+  useEffect(() => {
+    CookieManager.set("https://fenjoon.vercel.app", {
+      name: "isWebView",
+      value: "true",
+      path: "/",
+      httpOnly: false,
+      secure: false,
+    });
+  }, []);
+
+  const share = async (data: ShareData) => {
+    await Share.share({
+      message: data.text,
+      url: URL.createObjectURL(data.files[0]),
+    });
+  };
+
+  const handleMessage = (event: WebViewMessageEvent) => {
+    const data = JSON.parse(event.nativeEvent.data) as Record<string, string>;
+    if (data.type === "share") {
+      share(data);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
-      <View style={styles.container}>
+      <View style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
         <WebView
           bounces={false}
           ref={webViewRef}
@@ -38,16 +61,10 @@ export default function App() {
           source={{ uri: "https://fenjoon.vercel.app" }}
           style={{ flex: 1, backgroundColor: "#2e2e2e" }}
           onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
+          onMessage={handleMessage}
         />
         <StatusBar />
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#2e2e2e",
-  },
-});

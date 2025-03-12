@@ -4,11 +4,10 @@
     "slug": "fenjoon",
     "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#2e2e2e"
     },
     "assetBundlePatterns": [
@@ -22,6 +21,7 @@
       }
     },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#2e2e2e"
@@ -39,7 +39,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "088b478c-f130-4f31-a2fb-438bbdfbf5b3"
+        "projectId": "95471a58-f3f2-4027-aa8f-83a2f1cc68c1"
       }
     }
   }
