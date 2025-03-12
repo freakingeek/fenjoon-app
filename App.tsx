@@ -54,7 +54,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
-      <View>
+      <View style={{ flex: 1 }}>
         <WebView
           bounces={false}
           ref={webViewRef}
