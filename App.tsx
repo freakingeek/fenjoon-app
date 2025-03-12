@@ -40,14 +40,13 @@ export default function App() {
   const share = async (data: ShareData) => {
     await Share.share({
       message: data.text,
-      url: URL.createObjectURL(data.files[0]),
     });
   };
 
   const handleMessage = (event: WebViewMessageEvent) => {
     const data = JSON.parse(event.nativeEvent.data) as Record<string, string>;
-    Alert.alert("data: ", event.nativeEvent.data);
     if (data.type === "share") {
+      Alert.alert("data: ", event.nativeEvent.data);
       share(data);
     }
   };
