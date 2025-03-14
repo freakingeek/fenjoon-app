@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#2e2e2e"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "io.fenjoon.app",
@@ -43,6 +41,8 @@
         "expo-build-properties",
         {
           "android": {
+            "debuggable": false,
+            "minifyEnabled": true,
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourceslnReleaseBuilds": true,
             "useLegacyPackaging": true
