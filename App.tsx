@@ -1,6 +1,6 @@
-import * as Sharing from 'expo-sharing'
+// import * as Sharing from 'expo-sharing'
 import { StatusBar } from "expo-status-bar";
-import * as FileSystem from "expo-file-system";
+// import * as FileSystem from "expo-file-system";
 import { View, BackHandler } from "react-native";
 import React, { useRef, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,41 +30,41 @@ export default function App() {
     };
   }, [canGoBack]);
 
-  const share = async (data: { url?: string }) => {
-    if (!data.url) return;
+  // const share = async (data: { url?: string }) => {
+  //   if (!data.url) return;
 
-    try {
-      const base64Data = data.url.split(",")[1];
-      const filePath = `${
-        FileSystem.cacheDirectory
-      }/temp_image_${Date.now()}.png`;
+  //   try {
+  //     const base64Data = data.url.split(",")[1];
+  //     const filePath = `${
+  //       FileSystem.cacheDirectory
+  //     }/temp_image_${Date.now()}.png`;
 
-      await FileSystem.writeAsStringAsync(filePath, base64Data, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
+  //     await FileSystem.writeAsStringAsync(filePath, base64Data, {
+  //       encoding: FileSystem.EncodingType.Base64,
+  //     });
 
-      if (!(await Sharing.isAvailableAsync())) {
-        return;
-      }
+  //     if (!(await Sharing.isAvailableAsync())) {
+  //       return;
+  //     }
 
-      await Sharing.shareAsync(filePath, {
-        mimeType: "image/png",
-        dialogTitle: "اشتراک‌گذاری داستان",
-        UTI: "image.png",
-      });
-    } catch {}
-  };
+  //     await Sharing.shareAsync(filePath, {
+  //       mimeType: "image/png",
+  //       dialogTitle: "اشتراک‌گذاری داستان",
+  //       UTI: "image.png",
+  //     });
+  //   } catch {}
+  // };
 
-  const handleMessage = (event: WebViewMessageEvent) => {
-    const { type, ...payload } = JSON.parse(event.nativeEvent.data) as Record<
-      string,
-      string
-    >;
+  // const handleMessage = (event: WebViewMessageEvent) => {
+  //   const { type, ...payload } = JSON.parse(event.nativeEvent.data) as Record<
+  //     string,
+  //     string
+  //   >;
 
-    if (type === "share") {
-      share(payload);
-    }
-  };
+  //   if (type === "share") {
+  //     share(payload);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
@@ -76,7 +76,7 @@ export default function App() {
           source={{ uri: "https://fenjoon.vercel.app" }}
           style={{ flex: 1, backgroundColor: "#2e2e2e" }}
           onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
-          onMessage={handleMessage}
+          // onMessage={handleMessage}
         />
         <StatusBar />
       </View>
