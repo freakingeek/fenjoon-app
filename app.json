@@ -45,11 +45,7 @@
             "minifyEnabled": true,
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
-            "useLegacyPackaging": true,
-            "jsEngine": "hermes",
-            "multiDexEnabled": true,
-            "compileSdkVersion": 31,
-            "targetSdkVersion": 31
+            "useLegacyPackaging": true
           }
         }
       ]
