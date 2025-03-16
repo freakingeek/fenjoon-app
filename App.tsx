@@ -72,6 +72,7 @@ export default function App() {
         <WebView
           bounces={false}
           ref={webViewRef}
+          overScrollMode='never'
           userAgent="Fenjoon-WebView"
           source={{ uri: "https://fenjoon.vercel.app" }}
           style={{ flex: 1, backgroundColor: "#2e2e2e" }}
