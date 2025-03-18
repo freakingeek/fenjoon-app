@@ -1,14 +1,26 @@
-import * as Sharing from 'expo-sharing'
+import * as Sharing from "expo-sharing";
 import { StatusBar } from "expo-status-bar";
 import * as FileSystem from "expo-file-system";
 import { View, BackHandler } from "react-native";
 import React, { useRef, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { usePushNotifications } from "./hooks/usePushNotifications";
 import WebView, { type WebViewMessageEvent } from "react-native-webview";
 
 export default function App() {
   const webViewRef = useRef(null);
   const [canGoBack, setCanGoBack] = useState(false);
+  const { expoPushToken } = usePushNotifications();
+
+  useEffect(() => {
+    if (!expoPushToken?.data || !webViewRef.current) return;
+
+    webViewRef.current.injectJavaScript(
+      `if (window.setUserPushToken) window.setUserPushToken(${JSON.stringify(
+        expoPushToken.data
+      )});`
+    );
+  }, [expoPushToken?.data]);
 
   useEffect(() => {
     const backAction = () => {
@@ -72,7 +84,7 @@ export default function App() {
         <WebView
           bounces={false}
           ref={webViewRef}
-          overScrollMode='never'
+          overScrollMode="never"
           userAgent="Fenjoon-WebView"
           source={{ uri: "https://fenjoon.vercel.app" }}
           style={{ flex: 1, backgroundColor: "#2e2e2e" }}
