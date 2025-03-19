@@ -9,18 +9,17 @@ import WebView, { type WebViewMessageEvent } from "react-native-webview";
 
 export default function App() {
   const webViewRef = useRef(null);
-  const [canGoBack, setCanGoBack] = useState(false);
   const { expoPushToken } = usePushNotifications();
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [isWebViewLoaded, setIsWebViewLoaded] = useState(false);
 
   useEffect(() => {
-    if (!expoPushToken?.data || !webViewRef.current) return;
+    if (!expoPushToken?.data || !webViewRef.current || !isWebViewLoaded) return;
 
     webViewRef.current.injectJavaScript(
-      `if (window.setUserPushToken) window.setUserPushToken(${JSON.stringify(
-        expoPushToken.data
-      )});`
+      `window.expoPushToken=${JSON.stringify(expoPushToken.data)};`
     );
-  }, [expoPushToken?.data]);
+  }, [expoPushToken?.data, isWebViewLoaded]);
 
   useEffect(() => {
     const backAction = () => {
@@ -88,8 +87,9 @@ export default function App() {
           userAgent="Fenjoon-WebView"
           source={{ uri: "https://fenjoon.vercel.app" }}
           style={{ flex: 1, backgroundColor: "#2e2e2e" }}
-          onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
           onMessage={handleMessage}
+          onLoadEnd={() => setIsWebViewLoaded(true)}
+          onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
         />
         <StatusBar />
       </View>
