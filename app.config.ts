@@ -4,7 +4,7 @@ import { ExpoConfig } from "expo/config";
 const config: ExpoConfig = {
   name: "Fenjoon",
   slug: "fenjoon",
-  version: "0.1.2",
+  version: "0.1.3",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "automatic",
@@ -25,6 +25,7 @@ const config: ExpoConfig = {
     package: "io.fenjoon.app",
     softwareKeyboardLayoutMode: "pan",
     googleServicesFile: "./google-services.json",
+    blockedPermissions: ["android.permission.SYSTEM_ALERT_WINDOW"],
   },
   androidStatusBar: {
     translucent: false,
