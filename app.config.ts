@@ -4,7 +4,7 @@ import { ExpoConfig } from "expo/config";
 const config: ExpoConfig = {
   name: "Fenjoon",
   slug: "fenjoon",
-  version: "0.1.3",
+  version: "0.1.4",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "automatic",
@@ -22,14 +22,11 @@ const config: ExpoConfig = {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#2e2e2e",
     },
+    versionCode: 17,
     package: "io.fenjoon.app",
     softwareKeyboardLayoutMode: "pan",
     googleServicesFile: "./google-services.json",
     blockedPermissions: ["android.permission.SYSTEM_ALERT_WINDOW"],
-  },
-  androidNavigationBar: {
-    barStyle: "light-content",
-    backgroundColor: "#2e2e2e",
   },
   plugins: [
     [
@@ -60,7 +57,7 @@ const config: ExpoConfig = {
   ],
   extra: {
     eas: {
-      projectId: "08876034-7fa0-4eb2-ac38-972567bc659a",
+      projectId: "c6549b03-c3a9-4b33-ba3f-10e6e87b043b",
     },
   },
 };
