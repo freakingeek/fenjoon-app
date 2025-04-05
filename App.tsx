@@ -1,17 +1,39 @@
 import * as Sharing from "expo-sharing";
 import { StatusBar } from "expo-status-bar";
+import { useColorScheme } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { View, BackHandler } from "react-native";
-import React, { useRef, useState, useEffect } from "react";
+import * as NavigationBar from "expo-navigation-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { usePushNotifications } from "./hooks/usePushNotifications";
 import WebView, { type WebViewMessageEvent } from "react-native-webview";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 
 export default function App() {
   const webViewRef = useRef(null);
+  const colorScheme = useColorScheme();
   const { expoPushToken } = usePushNotifications();
   const [canGoBack, setCanGoBack] = useState(false);
   const [isWebViewLoaded, setIsWebViewLoaded] = useState(false);
+
+  const backgroundColor = colorScheme === "dark" ? "#2e2e2e" : "#f5ece3";
+
+  useLayoutEffect(() => {
+    NavigationBar.setBackgroundColorAsync(backgroundColor);
+    NavigationBar.setButtonStyleAsync(
+      colorScheme === "dark" ? "light" : "dark"
+    );
+
+    if (webViewRef.current) {
+      const themeScript = `
+          document.documentElement.setAttribute('data-theme', '${colorScheme}');
+          document.documentElement.classList.remove('light', 'dark');
+          document.documentElement.classList.add('${colorScheme}');
+          true;
+        `;
+      webViewRef.current.injectJavaScript(themeScript);
+    }
+  }, [colorScheme]);
 
   useEffect(() => {
     if (!expoPushToken?.data || !webViewRef.current || !isWebViewLoaded) return;
@@ -78,20 +100,22 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
-      <View style={{ flex: 1, backgroundColor: "#2e2e2e" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor }}>
+      <View style={{ flex: 1, backgroundColor }}>
         <WebView
+          textZoom={100}
           bounces={false}
           ref={webViewRef}
           overScrollMode="never"
-          userAgent="Fenjoon-WebView"
+          userAgent={`Fenjoon-WebView-${colorScheme}`}
           source={{ uri: "https://fenjoon.vercel.app" }}
-          style={{ flex: 1, backgroundColor: "#2e2e2e" }}
+          style={{ flex: 1, backgroundColor }}
           onMessage={handleMessage}
           onLoadEnd={() => setIsWebViewLoaded(true)}
           onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
         />
-        <StatusBar />
+
+        <StatusBar backgroundColor={backgroundColor} />
       </View>
     </SafeAreaView>
   );
