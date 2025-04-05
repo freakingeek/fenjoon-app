@@ -27,9 +27,6 @@ const config: ExpoConfig = {
     googleServicesFile: "./google-services.json",
     blockedPermissions: ["android.permission.SYSTEM_ALERT_WINDOW"],
   },
-  androidStatusBar: {
-    translucent: false,
-  },
   androidNavigationBar: {
     barStyle: "light-content",
     backgroundColor: "#2e2e2e",
@@ -51,8 +48,13 @@ const config: ExpoConfig = {
       "expo-splash-screen",
       {
         imageWidth: 256,
-        backgroundColor: "#2e2e2e",
-        image: "./assets/splash.png",
+        image: "./assets/splash-light.png",
+        backgroundColor: "#f5ece3",
+        dark: {
+          imageWidth: 256,
+          image: "./assets/splash-dark.png",
+          backgroundColor: "#2e2e2e",
+        },
       },
     ],
   ],
