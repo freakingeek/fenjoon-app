@@ -22,7 +22,7 @@ const config: ExpoConfig = {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#2e2e2e",
     },
-    versionCode: 17,
+    versionCode: 18,
     package: "io.fenjoon.app",
     softwareKeyboardLayoutMode: "pan",
     googleServicesFile: "./google-services.json",
