@@ -4,7 +4,7 @@ import { ExpoConfig } from "expo/config";
 const config: ExpoConfig = {
   name: "Fenjoon",
   slug: "fenjoon",
-  version: "0.1.4",
+  version: "0.1.5",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "automatic",
