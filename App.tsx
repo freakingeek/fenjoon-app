@@ -1,10 +1,10 @@
 import * as Sharing from "expo-sharing";
-import { useColorScheme } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { View, BackHandler } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { useRef, useState, useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
+import { Linking, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { usePushNotifications } from "./hooks/usePushNotifications";
 import { StatusBar, setStatusBarBackgroundColor } from "expo-status-bar";
@@ -100,6 +100,15 @@ export default function App() {
     }
   };
 
+  const handleShouldStartLoadWithRequest = (request) => {
+    if (request.url.startsWith('https://app.fnjo.ir')) {
+      return true;
+    }
+    
+    Linking.openURL(request.url);
+    return false;
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
@@ -109,11 +118,12 @@ export default function App() {
           ref={webViewRef}
           overScrollMode="never"
           userAgent="Fenjoon-WebView"
-          source={{ uri: "https://fenjoon.vercel.app?utm_source=bazzar" }}
+          source={{ uri: "https://app.fnjo.ir?utm_source=bazzar" }}
           style={{ flex: 1, backgroundColor }}
           onMessage={handleMessage}
           onLoadEnd={() => setIsWebViewLoaded(true)}
           onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
+          onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
         />
 
         <StatusBar backgroundColor={backgroundColor} />
