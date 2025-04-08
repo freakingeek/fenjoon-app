@@ -118,7 +118,7 @@ export default function App() {
           ref={webViewRef}
           overScrollMode="never"
           userAgent="Fenjoon-WebView"
-          source={{ uri: "https://app.fnjo.ir?utm_source=bazzar" }}
+          source={{ uri: "https://app.fnjo.ir" }}
           style={{ flex: 1, backgroundColor }}
           onMessage={handleMessage}
           onLoadEnd={() => setIsWebViewLoaded(true)}
