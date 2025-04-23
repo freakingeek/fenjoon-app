@@ -38,4 +38,4 @@ yarn-error.*
 app-example
 
 # credentials
-google-services.json
+#google-services.json
