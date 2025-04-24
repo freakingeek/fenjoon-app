@@ -4,7 +4,7 @@ import { ExpoConfig } from "expo/config";
 const config: ExpoConfig = {
   name: "Fenjoon",
   slug: "fenjoon",
-  version: "0.1.6",
+  version: "0.1.7",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "automatic",
@@ -22,7 +22,7 @@ const config: ExpoConfig = {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#2e2e2e",
     },
-    versionCode: 19,
+    versionCode: 20,
     package: "io.fenjoon.app",
     softwareKeyboardLayoutMode: "pan",
     googleServicesFile: "./google-services.json",
