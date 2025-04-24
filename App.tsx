@@ -2,7 +2,8 @@ import "./vendor/fetch";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import { View, BackHandler } from "react-native";
-import * as SplashScreen from "expo-splash-screen";
+// import * as SplashScreen from "expo-splash-screen";
+import * as Notifications from "expo-notifications";
 import { useRef, useState, useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import { Linking, useColorScheme } from "react-native";
@@ -11,14 +12,12 @@ import { usePushNotifications } from "./hooks/usePushNotifications";
 import { StatusBar, setStatusBarBackgroundColor } from "expo-status-bar";
 import WebView, { type WebViewMessageEvent } from "react-native-webview";
 
-SplashScreen.preventAutoHideAsync().catch(() => {});
-
 export default function App() {
   const webViewRef = useRef(null);
   const colorScheme = useColorScheme();
-  const { expoPushToken } = usePushNotifications();
   const [canGoBack, setCanGoBack] = useState(false);
   const [isWebViewLoaded, setIsWebViewLoaded] = useState(false);
+  const { expoPushToken, sendScheduleNotification } = usePushNotifications();
 
   const backgroundColor = colorScheme === "dark" ? "#2e2e2e" : "#f5ece3";
 
@@ -28,8 +27,6 @@ export default function App() {
 
       await NavigationBar.setBackgroundColorAsync(backgroundColor);
       await NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
-
-      await SplashScreen.hideAsync().catch(() => {});
     };
 
     setNavigationBarColor();
@@ -59,6 +56,19 @@ export default function App() {
       backHandler.remove();
     };
   }, [canGoBack]);
+
+  useEffect(() => {
+    sendScheduleNotification({
+      identifier: "reminder",
+      content: { title: "خوندن داستان‌های امروز یادت نره!" },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DAILY,
+        hour: 7,
+        minute: 20,
+        channelId: "silent",
+      },
+    }).catch(() => {});
+  }, []);
 
   const share = async (data: { url?: string }) => {
     if (!data.url) return;
