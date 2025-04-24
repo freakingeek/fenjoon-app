@@ -62,8 +62,8 @@ export default function App() {
       content: { title: "خوندن داستان‌های امروز یادت نره!" },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DAILY,
-        hour: 7,
-        minute: 20,
+        hour: 16,
+        minute: 10,
         channelId: "silent",
       },
     }).catch(() => {});
