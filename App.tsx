@@ -26,9 +26,7 @@ export default function App() {
       setStatusBarBackgroundColor(backgroundColor, true);
 
       await NavigationBar.setBackgroundColorAsync(backgroundColor);
-      await NavigationBar.setButtonStyleAsync(
-        colorScheme === "dark" ? "light" : "dark"
-      );
+      await NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
 
       await SplashScreen.hideAsync().catch(() => {});
     };
@@ -54,10 +52,7 @@ export default function App() {
       return true; // Prevent app from closing
     };
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
 
     return () => {
       backHandler.remove();
@@ -69,9 +64,7 @@ export default function App() {
 
     try {
       const base64Data = data.url.split(",")[1];
-      const filePath = `${
-        FileSystem.cacheDirectory
-      }/temp_image_${Date.now()}.png`;
+      const filePath = `${FileSystem.cacheDirectory}/temp_image_${Date.now()}.png`;
 
       await FileSystem.writeAsStringAsync(filePath, base64Data, {
         encoding: FileSystem.EncodingType.Base64,
@@ -90,10 +83,7 @@ export default function App() {
   };
 
   const handleMessage = (event: WebViewMessageEvent) => {
-    const { type, ...payload } = JSON.parse(event.nativeEvent.data) as Record<
-      string,
-      string
-    >;
+    const { type, ...payload } = JSON.parse(event.nativeEvent.data) as Record<string, string>;
 
     if (type === "share") {
       share(payload);
@@ -101,10 +91,10 @@ export default function App() {
   };
 
   const handleShouldStartLoadWithRequest = (request) => {
-    if (request.url.startsWith('https://app.fnjo.ir')) {
+    if (request.url.startsWith("https://app.fnjo.ir")) {
       return true;
     }
-    
+
     Linking.openURL(request.url);
     return false;
   };
