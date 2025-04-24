@@ -2,7 +2,6 @@ import "./vendor/fetch";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import { View, BackHandler } from "react-native";
-// import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
 import { useRef, useState, useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
@@ -119,7 +118,7 @@ export default function App() {
           ref={webViewRef}
           overScrollMode="never"
           userAgent="Fenjoon-WebView"
-          source={{ uri: "https://app.fnjo.ir" }}
+          source={{ uri: "https://app.fnjo.ir?utm_source=direct" }}
           style={{ flex: 1, backgroundColor }}
           onMessage={handleMessage}
           onLoadEnd={() => setIsWebViewLoaded(true)}
