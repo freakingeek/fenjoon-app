@@ -1,6 +1,6 @@
 const originalFetch = global.fetch;
 
-const baseUrl = "https://proxy.fnjo.ir";
+const baseUrl = "https://proxy.fenjoon.io";
 const proxyUrls = {
   "https://exp.host/--/api/v2/push/getExpoPushToken": `${baseUrl}/push/getExpoPushToken`,
   "https://exp.host/--/api/v2/push/updateDeviceToken": `${baseUrl}/push/updateDeviceToken`,
