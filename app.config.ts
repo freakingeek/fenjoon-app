@@ -10,6 +10,7 @@ const config: ExpoConfig = {
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
+  scheme: "fenjoon",
   ios: {
     supportsTablet: true,
     bundleIdentifier: "io.fenjoon.app",
@@ -27,6 +28,18 @@ const config: ExpoConfig = {
     softwareKeyboardLayoutMode: "pan",
     googleServicesFile: "./google-services.json",
     blockedPermissions: ["android.permission.SYSTEM_ALERT_WINDOW"],
+    intentFilters: [
+      {
+        action: "VIEW",
+        autoVerify: true,
+        data: [
+          {
+            scheme: "fenjoon",
+          },
+        ],
+        category: ["BROWSABLE", "DEFAULT"],
+      },
+    ],
   },
   plugins: [
     [
