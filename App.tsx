@@ -258,7 +258,7 @@ export default function App() {
           overScrollMode="never"
           userAgent="Fenjoon-WebView"
           style={{ flex: 1, backgroundColor }}
-          source={{ uri: "https://app.fenjoon.io?utm_source=direct" }}
+          source={{ uri: `${BASE_URL}?utm_source=direct` }}
           onMessage={handleMessage}
           onLoadEnd={() => setIsWebViewLoaded(true)}
           onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
