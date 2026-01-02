@@ -4,7 +4,7 @@ import { ExpoConfig } from "expo/config";
 const config: ExpoConfig = {
   name: "Fenjoon",
   slug: "fenjoon",
-  version: "0.1.8",
+  version: "0.1.9",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "automatic",
@@ -17,6 +17,7 @@ const config: ExpoConfig = {
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
+    associatedDomains: ["applinks:app.fenjoon.io"],
   },
   android: {
     adaptiveIcon: {
@@ -35,6 +36,17 @@ const config: ExpoConfig = {
         data: [
           {
             scheme: "fenjoon",
+          },
+        ],
+        category: ["BROWSABLE", "DEFAULT"],
+      },
+      {
+        action: "VIEW",
+        autoVerify: true,
+        data: [
+          {
+            scheme: "https",
+            host: "app.fenjoon.io",
           },
         ],
         category: ["BROWSABLE", "DEFAULT"],
