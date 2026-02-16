@@ -58,13 +58,25 @@ const config: ExpoConfig = {
       "expo-build-properties",
       {
         android: {
-          debuggable: false,
+          compileSdkVersion: 34,
+          targetSdkVersion: 34,
+          minSdkVersion: 24,
+
+          extraLocales: ["en"],
+
           minifyEnabled: true,
           enableProguardInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: true,
-          useLegacyPackaging: true,
-        },
-      },
+
+          useLegacyPackaging: false,
+
+          buildArchs: ["arm64-v8a"],
+
+          packagingOptions: {
+            pickFirst: ["**/*.so"]
+          }
+        }
+      }
     ],
     [
       "expo-splash-screen",
