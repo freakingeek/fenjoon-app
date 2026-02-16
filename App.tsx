@@ -1,14 +1,13 @@
 import "./vendor/fetch";
 import * as Sharing from "expo-sharing";
+import { StatusBar } from "expo-status-bar";
 import { File, Paths } from "expo-file-system";
 import * as Notifications from "expo-notifications";
 import { useRef, useState, useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import { Linking, useColorScheme } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { usePushNotifications } from "./hooks/usePushNotifications";
 import { View, BackHandler, Keyboard, Platform } from "react-native";
-import { StatusBar, setStatusBarBackgroundColor } from "expo-status-bar";
 import WebView, { type WebViewMessageEvent } from "react-native-webview";
 
 const BASE_URL = "https://app.fenjoon.io";
@@ -50,8 +49,8 @@ function parseFenjoonDeepLink(url: string): string | null {
 
 export default function App() {
   const webViewRef = useRef(null);
-  const isWebViewLoadedRef = useRef(false);
   const colorScheme = useColorScheme();
+  const isWebViewLoadedRef = useRef(false);
   const [canGoBack, setCanGoBack] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [keyboardDuration, setKeyboardDuration] = useState(300); // 300ms
@@ -60,12 +59,21 @@ export default function App() {
   const [pendingDeepLink, setPendingDeepLink] = useState<string | null>(null);
 
   const backgroundColor = colorScheme === "dark" ? "#2e2e2e" : "#f5ece3";
-  const statusBarStyle = colorScheme === "dark" ? "light" : "dark";
 
-  // Set status bar immediately on mount and when theme changes to prevent flash
   useEffect(() => {
-    setStatusBarBackgroundColor(backgroundColor, true);
-  }, [backgroundColor]);
+    if (Platform.OS !== "android") return;
+
+    NavigationBar.setPositionAsync("absolute");
+    NavigationBar.setVisibilityAsync("visible");
+    NavigationBar.setBehaviorAsync("overlay-swipe");
+    NavigationBar.setBackgroundColorAsync("transparent");
+  }, []);
+
+  useEffect(() => {
+    if (Platform.OS !== "android") return;
+
+    NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
+  }, [colorScheme]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", (e) => {
@@ -95,20 +103,10 @@ export default function App() {
   }, [keyboardHeight, keyboardDuration, isWebViewLoaded]);
 
   useEffect(() => {
-    const setNavigationBarColor = async () => {
-      setStatusBarBackgroundColor(backgroundColor, true);
-      await NavigationBar.setBackgroundColorAsync(backgroundColor);
-      await NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
-    };
-
-    setNavigationBarColor();
-  }, [colorScheme, backgroundColor]);
-
-  useEffect(() => {
     if (!expoPushToken?.data || !webViewRef.current || !isWebViewLoaded) return;
 
     webViewRef.current.injectJavaScript(
-      `window.expoPushToken=${JSON.stringify(expoPushToken.data)};`
+      `window.expoPushToken=${JSON.stringify(expoPushToken.data)};`,
     );
   }, [expoPushToken?.data, isWebViewLoaded]);
 
@@ -139,7 +137,7 @@ export default function App() {
         minute: 10,
         channelId: "silent",
       },
-    }).catch(() => { });
+    }).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -248,28 +246,37 @@ export default function App() {
     }
 
     // External links → browser
-    Linking.openURL(url).catch(() => { });
+    Linking.openURL(url).catch(() => {});
 
     return false;
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar style={statusBarStyle} backgroundColor={backgroundColor} />
+    <View style={{ flex: 1, backgroundColor }}>
+      <StatusBar
+        animated
+        translucent
+        backgroundColor="transparent"
+        style={colorScheme === "dark" ? "light" : "dark"}
+      />
 
       <WebView
         textZoom={100}
         bounces={false}
         ref={webViewRef}
         overScrollMode="never"
+        androidLayerType="hardware"
         userAgent="Fenjoon-WebView"
         style={{ flex: 1, backgroundColor }}
+        containerStyle={{ backgroundColor }}
+        contentInsetAdjustmentBehavior="never"
+        automaticallyAdjustContentInsets={false}
         source={{ uri: `${BASE_URL}?utm_source=direct` }}
         onMessage={handleMessage}
         onLoadEnd={() => setIsWebViewLoaded(true)}
-        onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
         onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
+        onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
       />
-    </SafeAreaView>
+    </View>
   );
 }
