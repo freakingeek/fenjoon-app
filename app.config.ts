@@ -33,22 +33,13 @@ const config: ExpoConfig = {
       {
         action: "VIEW",
         autoVerify: true,
-        data: [
-          {
-            scheme: "fenjoon",
-          },
-        ],
+        data: [{ scheme: "fenjoon" }],
         category: ["BROWSABLE", "DEFAULT"],
       },
       {
         action: "VIEW",
         autoVerify: true,
-        data: [
-          {
-            scheme: "https",
-            host: "app.fenjoon.io",
-          },
-        ],
+        data: [{ scheme: "https", host: "app.fenjoon.io" }],
         category: ["BROWSABLE", "DEFAULT"],
       },
     ],
