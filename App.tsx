@@ -1,6 +1,6 @@
 import "./vendor/fetch";
 import * as Sharing from "expo-sharing";
-import * as FileSystem from "expo-file-system";
+import { File, Paths } from "expo-file-system";
 import * as Notifications from "expo-notifications";
 import { useRef, useState, useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
@@ -60,6 +60,12 @@ export default function App() {
   const [pendingDeepLink, setPendingDeepLink] = useState<string | null>(null);
 
   const backgroundColor = colorScheme === "dark" ? "#2e2e2e" : "#f5ece3";
+  const statusBarStyle = colorScheme === "dark" ? "light" : "dark";
+
+  // Set status bar immediately on mount and when theme changes to prevent flash
+  useEffect(() => {
+    setStatusBarBackgroundColor(backgroundColor, true);
+  }, [backgroundColor]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", (e) => {
@@ -96,7 +102,7 @@ export default function App() {
     };
 
     setNavigationBarColor();
-  }, [colorScheme]);
+  }, [colorScheme, backgroundColor]);
 
   useEffect(() => {
     if (!expoPushToken?.data || !webViewRef.current || !isWebViewLoaded) return;
@@ -133,7 +139,7 @@ export default function App() {
         minute: 10,
         channelId: "silent",
       },
-    }).catch(() => {});
+    }).catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -170,11 +176,10 @@ export default function App() {
 
     try {
       const base64Data = data.url.split(",")[1];
-      const filePath = `${FileSystem.cacheDirectory}/temp_image_${Date.now()}.png`;
+      const filePath = `${Paths.cache}/temp_image_${Date.now()}.png`;
 
-      await FileSystem.writeAsStringAsync(filePath, base64Data, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
+      const file = new File(filePath);
+      file.write(base64Data, { encoding: "base64" });
 
       if (!(await Sharing.isAvailableAsync())) {
         return;
@@ -243,29 +248,28 @@ export default function App() {
     }
 
     // External links → browser
-    Linking.openURL(url).catch(() => {});
+    Linking.openURL(url).catch(() => { });
 
     return false;
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <WebView
-          textZoom={100}
-          bounces={false}
-          ref={webViewRef}
-          overScrollMode="never"
-          userAgent="Fenjoon-WebView"
-          style={{ flex: 1, backgroundColor }}
-          source={{ uri: `${BASE_URL}?utm_source=direct` }}
-          onMessage={handleMessage}
-          onLoadEnd={() => setIsWebViewLoaded(true)}
-          onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
-          onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
-        />
-        <StatusBar backgroundColor={backgroundColor} />
-      </View>
+      <StatusBar style={statusBarStyle} backgroundColor={backgroundColor} />
+
+      <WebView
+        textZoom={100}
+        bounces={false}
+        ref={webViewRef}
+        overScrollMode="never"
+        userAgent="Fenjoon-WebView"
+        style={{ flex: 1, backgroundColor }}
+        source={{ uri: `${BASE_URL}?utm_source=direct` }}
+        onMessage={handleMessage}
+        onLoadEnd={() => setIsWebViewLoaded(true)}
+        onNavigationStateChange={({ canGoBack }) => setCanGoBack(canGoBack)}
+        onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
+      />
     </SafeAreaView>
   );
 }
