@@ -53,13 +53,11 @@ const config: ExpoConfig = {
           targetSdkVersion: 35,
           minSdkVersion: 24,
 
-          extraLocales: ["en"],
-
           minifyEnabled: true,
           enableProguardInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: true,
 
-          useLegacyPackaging: false,
+          useLegacyPackaging: true,
 
           buildArchs: ["arm64-v8a"],
 
