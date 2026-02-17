@@ -1,7 +1,6 @@
 import "./vendor/fetch";
-import * as Sharing from "expo-sharing";
+import { share } from "./utils/share";
 import { StatusBar } from "expo-status-bar";
-import { File, Paths } from "expo-file-system";
 import * as Notifications from "expo-notifications";
 import { useRef, useState, useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
@@ -137,7 +136,7 @@ export default function App() {
         minute: 10,
         channelId: "silent",
       },
-    }).catch(() => {});
+    }).catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -168,28 +167,6 @@ export default function App() {
       setPendingDeepLink(null);
     }
   }, [pendingDeepLink, isWebViewLoaded]);
-
-  const share = async (data: { url?: string }) => {
-    if (!data.url) return;
-
-    try {
-      const base64Data = data.url.split(",")[1];
-      const filePath = `${Paths.cache}/temp_image_${Date.now()}.png`;
-
-      const file = new File(filePath);
-      file.write(base64Data, { encoding: "base64" });
-
-      if (!(await Sharing.isAvailableAsync())) {
-        return;
-      }
-
-      await Sharing.shareAsync(filePath, {
-        mimeType: "image/png",
-        dialogTitle: "اشتراک‌گذاری داستان",
-        UTI: "image.png",
-      });
-    } catch {}
-  };
 
   function sendRouteToWebView(url: string) {
     if (!webViewRef.current) return;
@@ -246,7 +223,7 @@ export default function App() {
     }
 
     // External links → browser
-    Linking.openURL(url).catch(() => {});
+    Linking.openURL(url).catch(() => { });
 
     return false;
   };
