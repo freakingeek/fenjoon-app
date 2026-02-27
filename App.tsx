@@ -232,7 +232,7 @@ export default function App() {
     <View style={{ flex: 1, backgroundColor }}>
       <StatusBar
         animated
-        translucent
+        translucent={false}
         backgroundColor="transparent"
         style={colorScheme === "dark" ? "light" : "dark"}
       />
@@ -244,6 +244,7 @@ export default function App() {
         overScrollMode="never"
         androidLayerType="hardware"
         userAgent="Fenjoon-WebView"
+        showsVerticalScrollIndicator={false}
         style={{ flex: 1, backgroundColor }}
         containerStyle={{ backgroundColor }}
         contentInsetAdjustmentBehavior="never"
