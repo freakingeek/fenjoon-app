@@ -1,13 +1,16 @@
 package io.fenjoon.app
-import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
 import android.os.Bundle
-
+import androidx.core.view.ViewCompat
+import androidx.core.graphics.Insets
 import com.facebook.react.ReactActivity
+import androidx.core.view.WindowInsetsCompat
 import com.facebook.react.ReactActivityDelegate
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
+import expo.modules.splashscreen.SplashScreenManager
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
+
 
 import expo.modules.ReactActivityDelegateWrapper
 
@@ -21,6 +24,17 @@ class MainActivity : ReactActivity() {
     SplashScreenManager.registerOnActivity(this)
     // @generated end expo-splashscreen
     super.onCreate(null)
+
+    // Prevent keyboard from resizing the WebView
+    ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, insets ->
+      val insetsWithoutIme = WindowInsetsCompat.Builder(insets)
+        .setInsets(
+          WindowInsetsCompat.Type.ime(),
+          Insets.NONE
+        )
+        .build()
+      ViewCompat.onApplyWindowInsets(view, insetsWithoutIme)
+    }
   }
 
   /**
